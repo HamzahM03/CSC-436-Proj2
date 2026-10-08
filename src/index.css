@@ -1,0 +1,13 @@
+:root {
+    --color-primary: #193b63;
+    --color-background: #142b45;
+    --color-surface: #203c59;
+    --color-text: #f1f5f9;
+    --color-accent: #65c7c0;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    min-height: 100vh;
+}
