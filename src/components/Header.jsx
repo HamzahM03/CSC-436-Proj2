@@ -1,7 +1,9 @@
 function Header() {
     return (
         <header>
-            <h1>Stock Simulator</h1>
+            <nav class="container">
+                <h1>Stock Simulator</h1>
+            </nav>
         </header>
     );
 }
