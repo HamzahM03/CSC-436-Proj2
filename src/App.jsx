@@ -7,6 +7,14 @@ import Hero from "./components/Hero.jsx";
 import GameStats from "./components/GameStats.jsx";
 import MarketPanel from "./components/MarketPanel.jsx";
 
+const sampleHistory = {
+    AAPL: [190, 192, 189, 195, 193, 198, 196],
+    NVDA: [140, 138, 145, 147, 143, 151, 149],
+    TSLA: [250, 255, 248, 260, 257, 265, 261],
+    AMZN: [180, 183, 181, 186, 184, 188, 191],
+    MSFT: [420, 425, 423, 430, 428, 433, 436],
+};
+
 function App() {
     const [selectedTicker, setSelectedTicker] = useState("AAPL");
 
@@ -27,6 +35,7 @@ function App() {
                     stocks={initialStocks}
                     selectedTicker={selectedTicker}
                     onSelectStock={setSelectedTicker}
+                    history={sampleHistory[selectedTicker]}
                 />
             </main>
         </>

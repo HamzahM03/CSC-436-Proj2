@@ -1,6 +1,7 @@
 import "./MarketPanel.css";
+import StockChart from "./StockChart.jsx";
 
-function MarketPanel({ stocks, selectedTicker, onSelectStock }) {
+function MarketPanel({ stocks, selectedTicker, onSelectStock,  history}) {
     
     const selectedStock = stocks.find(
         stock => stock.ticker === selectedTicker
@@ -34,9 +35,7 @@ function MarketPanel({ stocks, selectedTicker, onSelectStock }) {
 
                 <h2>${selectedStock.startingPrice.toFixed(2)}</h2>
 
-                <div className="chart-placeholder">
-                    Chart coming soon
-                </div>
+               <StockChart history={history} />
             </div>
 
         </section>
