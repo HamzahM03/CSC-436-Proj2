@@ -1,4 +1,4 @@
-const initialStocks = [
+export const initialStocks = [
     {
         ticker: "AAPL",
         name: "Apple",
@@ -26,4 +26,3 @@ const initialStocks = [
     }
 ];
 
-export default initialStocks;
