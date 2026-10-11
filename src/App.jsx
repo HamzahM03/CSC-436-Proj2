@@ -3,15 +3,28 @@ import "./App.css";
 
 import { newsEvents } from "./data/newsEvents.js";
 import { initialStocks } from "./data/initialStocks.js";
+import { formatCents } from "./utils/formatCents.js";
 
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
 import GameStats from "./components/GameStats.jsx";
 import MarketPanel from "./components/MarketPanel.jsx";
+import TradePanel from "./components/TradePanel.jsx";
+
+// Money is stored as whole cents so cash math stays exact.
+const STARTING_CASH_CENTS = 1_000_000;
 
 function App() {
     const [selectedTicker, setSelectedTicker] = useState("AAPL");
     const [currentNews, setCurrentNews] = useState(null);
+
+    // Cash and shares owned per stock are kept together in one object.
+    const [portfolio, setPortfolio] = useState(() => ({
+        cashCents: STARTING_CASH_CENTS,
+        holdings: Object.fromEntries(
+            initialStocks.map(stock => [stock.ticker, 0])
+        )
+    }));
 
     // Track news cooldown and recently triggered events.
     const newsCooldownRef = useRef(0);
@@ -112,6 +125,54 @@ function App() {
         stock => stock.ticker === selectedTicker
     );
 
+    // Total portfolio value = cash + every holding at its current price.
+    const portfolioValueCents = initialStocks.reduce(
+        (total, stock) =>
+            total +
+            portfolio.holdings[stock.ticker] *
+                Math.round(market[stock.ticker].price * 100),
+        portfolio.cashCents
+    );
+
+    // Buy or sell the selected stock at its current price.
+    // Returns { success, message } so TradePanel can show the result.
+    const handleTrade = (type, quantity) => {
+        const priceCents = Math.round(market[selectedTicker].price * 100);
+        const totalCents = priceCents * quantity;
+        const sharesOwned = portfolio.holdings[selectedTicker];
+
+        if (type === "buy" && totalCents > portfolio.cashCents) {
+            return {
+                success: false,
+                message: `Not enough cash. ${quantity} ${selectedTicker} costs ${formatCents(totalCents)}, but you only have ${formatCents(portfolio.cashCents)}.`
+            };
+        }
+
+        if (type === "sell" && quantity > sharesOwned) {
+            return {
+                success: false,
+                message: `You only own ${sharesOwned} ${selectedTicker} share${sharesOwned === 1 ? "" : "s"}.`
+            };
+        }
+
+        // Cash goes down when buying and up when selling.
+        const cashChange = type === "buy" ? -totalCents : totalCents;
+        const sharesChange = type === "buy" ? quantity : -quantity;
+
+        setPortfolio(previous => ({
+            cashCents: previous.cashCents + cashChange,
+            holdings: {
+                ...previous.holdings,
+                [selectedTicker]: previous.holdings[selectedTicker] + sharesChange
+            }
+        }));
+
+        return {
+            success: true,
+            message: `${type === "buy" ? "Bought" : "Sold"} ${quantity} ${selectedTicker} at ${formatCents(priceCents)} each (${formatCents(totalCents)} total).`
+        };
+    };
+
     return (
         <>
             <Header />
@@ -122,6 +183,8 @@ function App() {
                 <GameStats
                     stock={selectedStock}
                     price={market[selectedTicker].price}
+                    cashCents={portfolio.cashCents}
+                    portfolioValueCents={portfolioValueCents}
                 />
 
                 <MarketPanel
@@ -131,6 +194,13 @@ function App() {
                     history={market[selectedTicker].history}
                     price={market[selectedTicker].price}
                     news={currentNews}
+                />
+
+                <TradePanel
+                    stock={selectedStock}
+                    price={market[selectedTicker].price}
+                    sharesOwned={portfolio.holdings[selectedTicker]}
+                    onTrade={handleTrade}
                 />
             </main>
         </>

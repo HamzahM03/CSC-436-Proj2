@@ -1,4 +1,6 @@
-function GameStats({ stock, price }) {
+import { formatCents } from "../utils/formatCents.js";
+
+function GameStats({ stock, price, cashCents, portfolioValueCents }) {
     return (
         <section aria-label="Game overview" className="py-3">
             <div className="d-flex justify-content-between align-items-center gap-3">
@@ -20,7 +22,17 @@ function GameStats({ stock, price }) {
                     </p>
 
                     <h2 className="fs-4 mb-0">
-                        $10,000.00
+                        {formatCents(cashCents)}
+                    </h2>
+                </div>
+
+                <div className="text-end">
+                    <p className="mb-1 text-uppercase small">
+                        Portfolio Value
+                    </p>
+
+                    <h2 className="fs-4 mb-0">
+                        {formatCents(portfolioValueCents)}
                     </h2>
                 </div>
 
