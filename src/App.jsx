@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback} from "react";
 import "./App.css";
 
 import { initialStocks } from "./data/initialStocks.js";
@@ -22,16 +22,21 @@ function App() {
         )
     );
 
-    function advanceMarket() {
+    const advanceMarket = useCallback(() => {
+        const changes = Object.fromEntries(
+            initialStocks.map(stock => [
+                stock.ticker,
+                (Math.random() - 0.5) * 0.04
+            ])
+        );
+
         setMarket(previousMarket => {
             const updatedMarket = {};
 
             for (const [ticker, stockData] of Object.entries(previousMarket)) {
-                const percentChange = (Math.random() - 0.5) * 0.04;
-
                 const newPrice = Math.max(
                     0.01,
-                    stockData.price * (1 + percentChange)
+                    stockData.price * (1 + changes[ticker])
                 );
 
                 updatedMarket[ticker] = {
@@ -42,7 +47,14 @@ function App() {
 
             return updatedMarket;
         });
-    }
+    }, []);
+
+
+    useEffect(() => {
+        const intervalId = setInterval(advanceMarket, 3000);
+
+        return () => clearInterval(intervalId);
+    }, [advanceMarket]);
 
     const selectedStock = initialStocks.find(
         stock => stock.ticker === selectedTicker
@@ -68,13 +80,6 @@ function App() {
                     price={market[selectedTicker].price}
                 />
 
-                <button
-                    type="button"
-                    className="btn btn-outline-light mt-3"
-                    onClick={advanceMarket}
-                >
-                    Next Market Tick
-                </button>
             </main>
         </>
     );
