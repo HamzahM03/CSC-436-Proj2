@@ -1,0 +1,125 @@
+.trade-panel {
+    border: 1px solid #58718a;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-surface);
+}
+
+.trade-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.trade-panel-label {
+    margin-bottom: 0.75rem;
+    color: #a9bacb;
+    font-size: 0.8rem;
+}
+
+.trade-panel-owned {
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+}
+
+.trade-panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.trade-panel-controls label {
+    color: #a9bacb;
+    font-size: 0.85rem;
+}
+
+.trade-panel-controls input {
+    width: 8.5rem;
+    max-width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #58718a;
+    border-radius: 8px;
+    background-color: #192f49;
+    color: var(--color-text);
+}
+
+.trade-panel-controls input:focus-visible,
+.trade-button:focus-visible,
+.quick-button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.trade-button {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.trade-button.buy {
+    background-color: var(--color-accent);
+    color: #142b45;
+}
+
+.trade-button.sell {
+    background-color: transparent;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.trade-button:hover {
+    filter: brightness(1.1);
+}
+
+.trade-panel-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.quick-button {
+    min-width: 2.75rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #58718a;
+    border-radius: 8px;
+    background-color: #294663;
+    color: var(--color-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.quick-button:hover {
+    background-color: #315777;
+}
+
+.trade-panel-estimate {
+    margin: 0.75rem 0 0;
+    color: #a9bacb;
+    font-size: 0.85rem;
+}
+
+.trade-message {
+    margin: 0.75rem 0 0;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.trade-message.success {
+    background-color: #1d4a46;
+    color: #c9f2ee;
+}
+
+.trade-message.error {
+    background-color: #5a2a33;
+    color: #ffd6dc;
+}

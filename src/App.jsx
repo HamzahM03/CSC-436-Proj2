@@ -196,7 +196,9 @@ function App() {
                     news={currentNews}
                 />
 
+                {/* The key resets the quantity and message when switching stocks. */}
                 <TradePanel
+                    key={selectedTicker}
                     stock={selectedStock}
                     price={market[selectedTicker].price}
                     sharesOwned={portfolio.holdings[selectedTicker]}

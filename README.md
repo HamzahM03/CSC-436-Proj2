@@ -1,16 +1,50 @@
-# React + Vite
+# Stock Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CSC 436 Project 2: React Fundamentals.
 
-Currently, two official plugins are available:
+A stock-market simulation game. Five fictional stocks (AAPL, NVDA, TSLA, AMZN, MSFT) change price every three seconds, and fictional breaking news moves one or more of them. Start with $10,000 of virtual cash, watch the chart and news ticker, and buy or sell shares to grow your total portfolio value.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Live site:** _TODO: add the Netlify URL after deploying_
 
-## React Compiler
+**GitHub repository:** _TODO: add the repository URL_
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Five stocks with independent prices and price-history charts (Recharts).
+- Automatic market updates every three seconds.
+- Random news events with cooldown and repeat prevention.
+- Buy and sell the selected stock at its current price with a controlled quantity input.
+- Validation for non-whole or non-positive quantities, insufficient cash, and selling more shares than owned.
+- Live cash balance, shares owned per stock, and total portfolio value.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run locally
+
+Requires Node.js 20 or newer.
+
+```bash
+npm install
+npm run dev      # development server (http://localhost:5173)
+npm run build    # production build into dist/
+npm run preview  # serve the production build locally
+npm run lint     # run ESLint
+```
+
+## Deploy (Netlify)
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+## Project structure
+
+```
+src/
+  App.jsx                 # market, news, selected stock, and portfolio state
+  components/
+    Header.jsx, Hero.jsx
+    GameStats.jsx         # selected price, cash, portfolio value
+    MarketPanel.jsx       # stock tabs, chart, news ticker
+    StockChart.jsx, NewsTicker.jsx
+    TradePanel.jsx        # quantity input, buy/sell buttons, messages
+  data/                   # initialStocks.js, newsEvents.js
+  utils/formatCents.js    # cents -> "$1,234.56"
+```
