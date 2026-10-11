@@ -1,7 +1,8 @@
 import "./MarketPanel.css";
 import StockChart from "./StockChart.jsx";
+import NewsTicker from "./NewsTicker.jsx";
 
-function MarketPanel({ stocks, selectedTicker, onSelectStock,  history, price}) {
+function MarketPanel({ stocks, selectedTicker, onSelectStock,  history, price, news}) {
     
     const selectedStock = stocks.find(
         stock => stock.ticker === selectedTicker
@@ -37,6 +38,8 @@ function MarketPanel({ stocks, selectedTicker, onSelectStock,  history, price}) 
 
                <StockChart history={history} />
             </div>
+
+            <NewsTicker news={news} />
 
         </section>
     );
