@@ -57,7 +57,7 @@ function App() {
 
         if (newsCooldownRef.current > 0) {
             newsCooldownRef.current -= 1;
-        } else if (Math.random() < 0.20) {
+        } else if (Math.random() < 0.50) {
             // Exclude the last eight triggered events.
             const availableEvents = newsEvents.filter(
                 event => !recentNewsIdsRef.current.includes(event.id)
@@ -77,8 +77,8 @@ function App() {
                     newsEvent.id
                 ].slice(-8);
 
-                // Prevent news for the next three market ticks.
-                newsCooldownRef.current = 3;
+                // Prevent news for the next market tick.
+                newsCooldownRef.current = 1;
             }
         }
 
