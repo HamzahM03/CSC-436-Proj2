@@ -14,7 +14,7 @@ function NewsTicker({ news }) {
                     aria-live="polite"
                 >
                     {news
-                        ? `${news.ticker} — ${news.headline}`
+                        ? news.headline
                         : "Market is open. Waiting for breaking news..."}
                 </p>
             </div>

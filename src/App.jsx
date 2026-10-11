@@ -12,8 +12,12 @@ import MarketPanel from "./components/MarketPanel.jsx";
 function App() {
     const [selectedTicker, setSelectedTicker] = useState("AAPL");
     const [currentNews, setCurrentNews] = useState(null);
-    const newsCooldownRef = useRef(0);
 
+    // Track news cooldown and recently triggered events.
+    const newsCooldownRef = useRef(0);
+    const recentNewsIdsRef = useRef([]);
+
+    // Initialize market prices and price histories.
     const [market, setMarket] = useState(() =>
         Object.fromEntries(
             initialStocks.map(stock => [
@@ -27,7 +31,7 @@ function App() {
     );
 
     const advanceMarket = useCallback(() => {
-        // Generate random price movements for all five stocks.
+        // Generate random price movements for all stocks.
         const changes = Object.fromEntries(
             initialStocks.map(stock => [
                 stock.ticker,
@@ -35,33 +39,49 @@ function App() {
             ])
         );
 
-        // Decide whether a news event should occur this tick.
+        // Determine whether a news event should occur.
         let newsEvent = null;
 
         if (newsCooldownRef.current > 0) {
             newsCooldownRef.current -= 1;
         } else if (Math.random() < 0.20) {
-            const randomIndex = Math.floor(
-                Math.random() * newsEvents.length
+            // Exclude the last eight triggered events.
+            const availableEvents = newsEvents.filter(
+                event => !recentNewsIdsRef.current.includes(event.id)
             );
 
-            newsEvent = newsEvents[randomIndex];
-            newsCooldownRef.current = 3;
+            // Choose a random eligible event.
+            if (availableEvents.length > 0) {
+                const randomIndex = Math.floor(
+                    Math.random() * availableEvents.length
+                );
+
+                newsEvent = availableEvents[randomIndex];
+
+                // Remember this event, keeping only the last eight IDs.
+                recentNewsIdsRef.current = [
+                    ...recentNewsIdsRef.current,
+                    newsEvent.id
+                ].slice(-8);
+
+                // Prevent news for the next three market ticks.
+                newsCooldownRef.current = 3;
+            }
         }
 
-        // Store the latest news event for the future news ticker.
+        // Update the news headline displayed in the UI.
         if (newsEvent) {
             console.log("News triggered:", newsEvent);
             setCurrentNews(newsEvent);
         }
 
-        // Update every stock, including any news impact.
+        // Update all stock prices, applying any news impacts.
         setMarket(previousMarket => {
             const updatedMarket = {};
 
             for (const [ticker, stockData] of Object.entries(previousMarket)) {
-                const newsImpact =
-                    newsEvent?.ticker === ticker ? newsEvent.impact : 0;
+                // An event can affect one, several, or all stocks.
+                const newsImpact = newsEvent?.impacts[ticker] ?? 0;
 
                 const totalChange = changes[ticker] + newsImpact;
 
@@ -80,14 +100,14 @@ function App() {
         });
     }, []);
 
-    // Advance the market automatically every three seconds.
+    // Automatically advance the market every three seconds.
     useEffect(() => {
         const intervalId = setInterval(advanceMarket, 3000);
 
         return () => clearInterval(intervalId);
     }, [advanceMarket]);
 
-    // Find the stock currently selected by the player.
+    // Get the currently selected stock.
     const selectedStock = initialStocks.find(
         stock => stock.ticker === selectedTicker
     );
