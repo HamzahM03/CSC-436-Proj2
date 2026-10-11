@@ -33,6 +33,12 @@
     flex-wrap: wrap;
 }
 
+.trade-panel-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .trade-panel-controls label {
     color: #a9bacb;
     font-size: 0.85rem;
@@ -65,7 +71,7 @@
 
 .trade-button.buy {
     background-color: var(--color-accent);
-    color: #142b45;
+    color: var(--color-background);
 }
 
 .trade-button.sell {
@@ -122,4 +128,26 @@
 .trade-message.error {
     background-color: #5a2a33;
     color: #ffd6dc;
+}
+
+/* Phones: quantity on one row, Buy and Sell sharing the next row. */
+@media (max-width: 575px) {
+    .trade-panel {
+        padding: 1rem;
+    }
+
+    .trade-panel-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .trade-panel-quantity {
+        grid-column: 1 / -1;
+    }
+
+    .trade-panel-quantity input {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+    }
 }

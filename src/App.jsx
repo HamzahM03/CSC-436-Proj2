@@ -1,6 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import "./App.css";
-
 import { newsEvents } from "./data/newsEvents.js";
 import { initialStocks } from "./data/initialStocks.js";
 import { formatCents } from "./utils/formatCents.js";
@@ -84,7 +82,6 @@ function App() {
 
         // Update the news headline displayed in the UI.
         if (newsEvent) {
-            console.log("News triggered:", newsEvent);
             setCurrentNews(newsEvent);
         }
 

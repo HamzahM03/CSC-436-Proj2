@@ -51,17 +51,19 @@ function TradePanel({ stock, price, sharesOwned, onTrade }) {
             </div>
 
             <div className="trade-panel-controls">
-                <label htmlFor="trade-quantity">Quantity</label>
+                <div className="trade-panel-quantity">
+                    <label htmlFor="trade-quantity">Quantity</label>
 
-                <input
-                    id="trade-quantity"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    placeholder="e.g. 10"
-                    value={quantityText}
-                    onChange={handleQuantityChange}
-                />
+                    <input
+                        id="trade-quantity"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="off"
+                        placeholder="e.g. 10"
+                        value={quantityText}
+                        onChange={handleQuantityChange}
+                    />
+                </div>
 
                 <button
                     type="button"
@@ -80,7 +82,11 @@ function TradePanel({ stock, price, sharesOwned, onTrade }) {
                 </button>
             </div>
 
-            <div className="trade-panel-quick" aria-label="Quick quantities">
+            <div
+                className="trade-panel-quick"
+                role="group"
+                aria-label="Quick quantities"
+            >
                 {QUICK_QUANTITIES.map(amount => (
                     <button
                         key={amount}

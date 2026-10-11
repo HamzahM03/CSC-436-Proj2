@@ -3,7 +3,7 @@ import { formatCents } from "../utils/formatCents.js";
 function GameStats({ stock, price, cashCents, portfolioValueCents }) {
     return (
         <section aria-label="Game overview" className="py-3">
-            <div className="d-flex justify-content-between align-items-center gap-3">
+            <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
 
                 <div>
                     <p className="mb-1 text-uppercase small">
