@@ -1,4 +1,4 @@
-function GameStats({ stock }) {
+function GameStats({ stock, price }) {
     return (
         <section aria-label="Game overview" className="py-3">
             <div className="d-flex justify-content-between align-items-center gap-3">
@@ -9,7 +9,7 @@ function GameStats({ stock }) {
                     </p>
 
                     <h2 className="fs-4 mb-0">
-                        ${stock.startingPrice.toFixed(2)}
+                        ${price.toFixed(2)}
                         <span className="fs-6 fw-normal"> / share</span>
                     </h2>
                 </div>

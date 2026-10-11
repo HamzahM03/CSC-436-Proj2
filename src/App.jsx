@@ -7,16 +7,42 @@ import Hero from "./components/Hero.jsx";
 import GameStats from "./components/GameStats.jsx";
 import MarketPanel from "./components/MarketPanel.jsx";
 
-const sampleHistory = {
-    AAPL: [190, 192, 189, 195, 193, 198, 196],
-    NVDA: [140, 138, 145, 147, 143, 151, 149],
-    TSLA: [250, 255, 248, 260, 257, 265, 261],
-    AMZN: [180, 183, 181, 186, 184, 188, 191],
-    MSFT: [420, 425, 423, 430, 428, 433, 436],
-};
 
 function App() {
     const [selectedTicker, setSelectedTicker] = useState("AAPL");
+    const [market, setMarket] = useState(() =>
+        Object.fromEntries(
+            initialStocks.map(stock => [
+                stock.ticker,
+                {
+                    price: stock.startingPrice,
+                    history: [stock.startingPrice]
+                }
+            ])
+        )
+    );
+
+    function advanceMarket() {
+        setMarket(previousMarket => {
+            const updatedMarket = {};
+
+            for (const [ticker, stockData] of Object.entries(previousMarket)) {
+                const percentChange = (Math.random() - 0.5) * 0.04;
+
+                const newPrice = Math.max(
+                    0.01,
+                    stockData.price * (1 + percentChange)
+                );
+
+                updatedMarket[ticker] = {
+                    price: newPrice,
+                    history: [...stockData.history, newPrice]
+                };
+            }
+
+            return updatedMarket;
+        });
+    }
 
     const selectedStock = initialStocks.find(
         stock => stock.ticker === selectedTicker
@@ -29,14 +55,26 @@ function App() {
             <main className="container">
                 <Hero />
 
-                <GameStats stock={selectedStock} />
+                <GameStats
+                    stock={selectedStock}
+                    price={market[selectedTicker].price}
+                />
 
                 <MarketPanel
                     stocks={initialStocks}
                     selectedTicker={selectedTicker}
                     onSelectStock={setSelectedTicker}
-                    history={sampleHistory[selectedTicker]}
+                    history={market[selectedTicker].history}
+                    price={market[selectedTicker].price}
                 />
+
+                <button
+                    type="button"
+                    className="btn btn-outline-light mt-3"
+                    onClick={advanceMarket}
+                >
+                    Next Market Tick
+                </button>
             </main>
         </>
     );
